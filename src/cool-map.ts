@@ -1,17 +1,20 @@
 // TODO: allow using number
-import { Resolve, WMap, NMap } from './types';
+import { Resolve } from './types';
 import { REFLECT_KEY } from './constants';
+
+export type WMap<T> = WeakMap<object, Resolve<T>>;
+export type NMap<T> = Map<any, Resolve<T>>;
 // TODO? work with key as typeof string to improve perfomance and type-checking
-export class CoolMap {
-    private _weakMap: WMap = new WeakMap<object, Resolve>();
-    private _map: NMap = new Map<any, Resolve>();
-    private _promises = new WeakMap<Resolve, Promise<void>>();
+export class CoolMap<T> {
+    private _weakMap: WMap<T> = new WeakMap<object, Resolve<T>>();
+    private _map: NMap<T> = new Map<any, Resolve<T>>();
+    private _promises = new WeakMap<Resolve, Promise<T>>();
 
     create(key: any) {
-        return new Promise<void>((resolve) => this.set(key, resolve));
+        return new Promise<T>((resolve) => this.set(key, resolve));
     }
 
-    save(key: any): Promise<void> {
+    save(key: any): Promise<T> {
         // @ts-ignore
         if (this.has(key)) return this._promises.get(this.get(key));
         const promise = this.create(key);
@@ -20,11 +23,11 @@ export class CoolMap {
         return promise;
     }
 
-    set(key: any, value: Resolve): void {
+    set(key: any, value: Resolve<T>): void {
         this.map(key).set(key, value);
     }
 
-    get(key: any): Resolve | undefined {
+    get(key: any): Resolve<T> | undefined {
         return this.map(key).get(key);
     }
 
@@ -39,7 +42,7 @@ export class CoolMap {
         this.map(key).delete(key);
     }
 
-    call(key: any): void {
+    call(key: any, resolveWith = key): void {
         if (!this.has(key)) return;
         // @ts-ignore
         this.get(key)();
@@ -47,26 +50,25 @@ export class CoolMap {
     }
 
     // private map<T extends object | string>(key: T): T extends object ? WMap : NMap {
-    private map<T>(key: T): WMap | NMap {
+    private map(key: T): WMap<T> | NMap<T> {
         return key instanceof Object ? this._weakMap : this._map;
     }
 
     // TODO: add generic
-    static get<T extends object>(target: T, key: keyof T): CoolMap | undefined {
+    static get<T extends object>(target: T, key: keyof T): CoolMap<T[typeof key]> | undefined {
         return Reflect.getMetadata(REFLECT_KEY, target, CoolMap.prepareKey(key));
     }
 
-    static create<T extends object>(target: T, key: keyof T): CoolMap {
-        const map = new CoolMap();
+    static create<T extends object>(target: T, key: keyof T): CoolMap<T[typeof key]> {
+        const map = new CoolMap<T[typeof key]>();
         Reflect.defineMetadata(REFLECT_KEY, map, target, CoolMap.prepareKey(key));
         return map;
     }
 
     // TODO? const pKey = CoolMap.prepareKey ?
-    static getOrCreate<T extends object>(target: T, key: keyof T): CoolMap {
+    static getOrCreate<T extends object>(target: T, key: keyof T): CoolMap<T[typeof key]> {
         return CoolMap.get(target, key) || CoolMap.create(target, key);
     }
-
 
     static prepareKey(key: PropertyKey): string | symbol {
         return typeof key === 'number' ? key.toString() : key;

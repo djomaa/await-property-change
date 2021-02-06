@@ -15,3 +15,32 @@ export function waitFor<T extends object>(target: T, key: keyof T, value: any = 
     }
     return resolverMap.save(value);
 }
+
+class Until<T extends object, K extends keyof T> {
+    constructor(
+        readonly target: T,
+        readonly key: K,
+    ) {}
+
+    changed(): Promise<void> {
+        return waitFor(this.target, this.key, ChangeEvent);
+    }
+
+    notEqual(value: any) {
+        return waitFor(this.target, this.key, value);
+    }
+
+    falsy(handler: (value: T[K]) => boolean) {
+        return new Promise<void>(async (resolve, reject) => {
+            while (true) {
+                const value = await waitFor(this.target, this.key, ChangeEvent);
+                const shouldResolve = await handler(value);
+            }
+        })
+    }
+
+}
+
+export function until<T extends object>(target: T, key: keyof T) {
+    return new Until()
+}
