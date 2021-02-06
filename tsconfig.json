@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "experimentalDecorators": true,
+    "strict": true,
     "module": "commonjs",
     "noImplicitAny": true,
     "esModuleInterop": true,
@@ -9,6 +10,6 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "test/example.ts"],
   "exclude": ["./src/ui/*.ui/view/**/*"]
 }
