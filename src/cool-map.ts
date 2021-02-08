@@ -1,5 +1,5 @@
 // TODO: allow using number
-import { Resolve, WMap, NMap } from './types';
+import { Resolve, WMap, NMap } from '../types/common';
 import { REFLECT_KEY } from './constants';
 // TODO? work with key as typeof string to improve perfomance and type-checking
 export class CoolMap {

@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "module": "commonjs",
+    "target": "ES6",
+    "declaration": true,
+    "declarationDir": "types",
     "experimentalDecorators": true,
     "strict": true,
-    "module": "commonjs",
     "noImplicitAny": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": "./src"
   },
-  "include": ["./src/**/*", "test/example.ts"],
-  "exclude": ["./src/ui/*.ui/view/**/*"]
+  "include": ["src/**/*"]
 }

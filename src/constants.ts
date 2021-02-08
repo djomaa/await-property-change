@@ -1,2 +1,2 @@
-export const REFLECT_KEY = 'awaitable';
+export const REFLECT_KEY = 'awapege';
 export const ChangeEvent = {};
