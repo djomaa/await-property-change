@@ -1,6 +1,11 @@
 {
+  "name": "awapege",
+  "version": "0.0.2",
+  "main": "dist/index.js",
+  "types": "types/generated",
+  "license": "MIT",
   "scripts": {
-    "build": "tsc .",
+    "build": "tsc",
     "test": "DEBUG=awapege:* npx ts-node ./test/index.ts"
   },
   "dependencies": {
@@ -11,9 +16,5 @@
   "devDependencies": {
     "ts-node": "^9.1.1",
     "@types/debug": "^4.1.5"
-  },
-  "name": "awapege",
-  "version": "0.0.2",
-  "main": "dist/index.js",
-  "license": "MIT"
+  }
 }

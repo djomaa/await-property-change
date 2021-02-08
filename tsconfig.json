@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "ES6",
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "types/generated",
     "experimentalDecorators": true,
     "strict": true,
     "noImplicitAny": true,

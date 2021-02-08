@@ -1,4 +1,4 @@
-import { waitFor } from '../src/awaitable';
+import { waitFor } from '../dist';
 
 class Manager {
 
