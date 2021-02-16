@@ -1,1 +1,1 @@
-export { waitFor } from './awaitable';
+export { waitFor, property } from './awaitable';

@@ -8,7 +8,7 @@ function handle<T extends object>(target: T, key: keyof T, value: any) {
     debug(`value changed to ${value}`)
     const resolverMap = AMap.get(target, key);
     if (resolverMap) {
-        resolverMap.call(CHANGE);
+        resolverMap.call(CHANGE, value);
         resolverMap.call(value);
     }
 }
