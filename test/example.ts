@@ -1,4 +1,4 @@
-import { waitFor } from '../dist';
+import { waitFor } from '../src';
 
 class Manager {
 
@@ -13,7 +13,7 @@ class Manager {
     }
 
     async upload() {
-        await waitFor(this, 'connected');
+        await waitFor(this, 'connected', true);
         console.log('upload');
         // ...
     }

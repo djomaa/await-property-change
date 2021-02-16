@@ -1,15 +1,14 @@
-import { ChangeEvent } from "./constants";
-import { CoolMap } from "./cool-map";
+import { CHANGE } from "./constants";
+import { AMap } from "./map";
 import debugFactory from 'debug';
 
 
 function handle<T extends object>(target: T, key: keyof T, value: any) {
     const debug = debugFactory(`awaitable:handle:${key}`);
     debug(`value changed to ${value}`)
-    const resolverMap = CoolMap.get(target, key);
+    const resolverMap = AMap.get(target, key);
     if (resolverMap) {
-        // @ts-ignore
-        resolverMap.call(ChangeEvent);
+        resolverMap.call(CHANGE);
         resolverMap.call(value);
     }
 }
@@ -54,8 +53,7 @@ export function createHandler<T extends object, K extends keyof T>(target: T, ke
                 // @ts-ignore
                 oDesc.set(value);
                 // TODO? wait for promise? we do not resolving results
-                const newValue = oDesc.get ? oDesc.get() : value;
-                handle(target, key, newValue);
+                handle(target, key, oDesc.get ? oDesc.get() : value);
             }
         })
     } else {
